@@ -29,7 +29,7 @@ This project enforces DevOps best practices by entirely removing manual interven
 3.  **Continuous Deployment:** The runner authenticates securely with AWS via IAM Access Keys (stored as GitHub Secrets), executes `terraform plan` to verify changes, and runs `terraform apply` to provision the resources.
 
 ### Pipeline Execution Proof
-![GitHub Actions Pipeline Success](./images/pipeline-success.jpg) 
+![GitHub Actions Pipeline Success](pipeline-success.jpg)
 
 
 ---
@@ -38,7 +38,7 @@ This project enforces DevOps best practices by entirely removing manual interven
 
 Upon successful pipeline execution, Terraform outputs the dynamic Public IP address of the provisioned EC2 instance. Navigating to this IP confirms the automated installation and configuration of the Apache web server.
 
-![Web Server Live Preview](./images/app-preview.jpg)
+![Web Server Live Preview](app-preview.jpg)
 
 ---
 
