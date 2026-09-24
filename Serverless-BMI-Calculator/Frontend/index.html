@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serverless BMI Calculator</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding-top: 50px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 320px; text-align: center; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; }
+        button { background: #0073bb; color: white; border: none; padding: 12px 20px; width: 100%; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #005a93; }
+        .result { margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; display: none; }
+        .bmi-value { font-size: 32px; font-weight: bold; color: #333; }
+        .category { font-size: 18px; color: #666; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>BMI CALCULATOR</h2>
+        
+        <label>Weight (kg)</label>
+        <input type="number" id="weight" placeholder="e.g., 75">
+        
+        <label>Height (cm)</label>
+        <input type="number" id="height" placeholder="e.g., 179">
+        
+        <button onclick="calculateBMI()" id="calcBtn">Calculate BMI</button>
+
+        <div class="result" id="resultBox">
+            <div style="font-size: 14px; color: #666;">Your BMI</div>
+            <div class="bmi-value" id="bmiValue">--</div>
+            <div class="category" id="bmiCategory">--</div>
+        </div>
+    </div>
+
+    <script>
+        // REPLACE THIS WITH YOUR API GATEWAY URL
+        const API_URL = "https://z0ivo51bi0.execute-api.ap-southeast-2.amazonaws.com/calculate-bmi";
+
+        async function calculateBMI() {
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            const btn = document.getElementById('calcBtn');
+
+            if (!weight || !height) return alert("Please enter both values");
+
+            btn.innerText = "Calculating...";
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ weight: weight, height: height })
+                });
+                
+                const data = await response.json();
+                
+                document.getElementById('resultBox').style.display = 'block';
+                document.getElementById('bmiValue').innerText = data.bmi;
+                document.getElementById('bmiCategory').innerText = data.category;
+            } catch (error) {
+                alert("Error connecting to AWS API Gateway");
+            } finally {
+                btn.innerText = "Calculate BMI";
+            }
+        }
+    </script>
+</body>
+</html>
